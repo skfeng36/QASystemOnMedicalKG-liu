@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/sk/anaconda3/envs/myenv/bin/python
 # coding: utf-8
 # File: answer_search.py
 # Author: lhy<lhy_in_blcu@126.com,https://huangyong.github.io>
@@ -8,11 +8,7 @@ from py2neo import Graph
 
 class AnswerSearcher:
     def __init__(self):
-        self.g = Graph(
-            host="127.0.0.1",
-            http_port=7474,
-            user="lhy",
-            password="lhy123")
+        self.g = Graph("bolt://localhost:7687", auth=("neo4j", "chuangshiji"))
         self.num_limit = 20
 
     '''执行cypher查询，并返回相应结果'''
@@ -25,9 +21,11 @@ class AnswerSearcher:
             for query in queries:
                 ress = self.g.run(query).data()
                 answers += ress
+                print("answers: ",answers)
             final_answer = self.answer_prettify(question_type, answers)
             if final_answer:
                 final_answers.append(final_answer)
+        print("final_answers：" ,final_answers)
         return final_answers
 
     '''根据对应的qustion_type，调用相应的回复模板'''

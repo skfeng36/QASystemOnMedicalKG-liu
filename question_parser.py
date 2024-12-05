@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/sk/anaconda3/envs/myenv/bin/python
 # coding: utf-8
 # File: question_parser.py
 # Author: lhy<lhy_in_blcu@126.com,https://huangyong.github.io>
@@ -23,6 +23,8 @@ class QuestionPaser:
         args = res_classify['args']
         entity_dict = self.build_entitydict(args)
         question_types = res_classify['question_types']
+        print('entity_dict: %s', entity_dict)
+        print('question_types: %s', question_types)
         sqls = []
         for question_type in question_types:
             sql_ = {}
@@ -86,7 +88,7 @@ class QuestionPaser:
                 sql_['sql'] = sql
 
                 sqls.append(sql_)
-
+            print("cypcher 语句： %s" ,sqls)
         return sqls
 
     '''针对不同的问题，分开进行处理'''
