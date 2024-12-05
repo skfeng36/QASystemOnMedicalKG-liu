@@ -29,11 +29,11 @@ class QuestionClassifier:
         self.symptom_wds= [i.strip() for i in open(self.symptom_path) if i.strip()]
         self.region_words = set(self.department_wds + self.disease_wds + self.check_wds + self.drug_wds + self.food_wds + self.producer_wds + self.symptom_wds)
         self.deny_words = [i.strip() for i in open(self.deny_path) if i.strip()]
-        # 构造领域actree
+        # 构造领域actree ，就是将所有的特征关键词放入到自动机里，构造一个自动机，通过自动机来快速的匹配用户输入的一句话里的特征关键字。提取出用户的句子中的关键字
         self.region_tree = self.build_actree(list(self.region_words))
-        # 构建词典
+        # 构建词典 ，将每种特征词进行分类，放到字典里，这样可以快速的知道每个关键字是疾病，还是，药物等。
         self.wdtype_dict = self.build_wdtype_dict()
-        # 问句疑问词
+        # 问句疑问词，列举自然语言中和疾病，药物，等相关的疑问句关键词
         self.symptom_qwds = ['症状', '表征', '现象', '症候', '表现']
         self.cause_qwds = ['原因','成因', '为什么', '怎么会', '怎样才', '咋样才', '怎样会', '如何会', '为啥', '为何', '如何才会', '怎么才会', '会导致', '会造成']
         self.acompany_qwds = ['并发症', '并发', '一起发生', '一并发生', '一起出现', '一并出现', '一同发生', '一同出现', '伴随发生', '伴随', '共现']
@@ -61,6 +61,7 @@ class QuestionClassifier:
     def classify(self, question):
         data = {}
         medical_dict = self.check_medical(question)
+        print(medical_dict)
         if not medical_dict:
             return {}
         data['args'] = medical_dict
