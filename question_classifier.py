@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/sk/anaconda3/envs/myenv/bin/python
 # coding: utf-8
 # File: question_classifier.py
 # Author: lhy<lhy_in_blcu@126.com,https://huangyong.github.io>
@@ -10,7 +10,7 @@ import ahocorasick
 class QuestionClassifier:
     def __init__(self):
         cur_dir = '/'.join(os.path.abspath(__file__).split('/')[:-1])
-        #　特征词路径
+        #　特征词路径,这些文件里存储了疾病，科室，症状，药物，食物，检查项目等关键字
         self.disease_path = os.path.join(cur_dir, 'dict/disease.txt')
         self.department_path = os.path.join(cur_dir, 'dict/department.txt')
         self.check_path = os.path.join(cur_dir, 'dict/check.txt')
@@ -19,7 +19,7 @@ class QuestionClassifier:
         self.producer_path = os.path.join(cur_dir, 'dict/producer.txt')
         self.symptom_path = os.path.join(cur_dir, 'dict/symptom.txt')
         self.deny_path = os.path.join(cur_dir, 'dict/deny.txt')
-        # 加载特征词
+        # 从特征词文件里加载特征词到列表里
         self.disease_wds= [i.strip() for i in open(self.disease_path) if i.strip()]
         self.department_wds= [i.strip() for i in open(self.department_path) if i.strip()]
         self.check_wds= [i.strip() for i in open(self.check_path) if i.strip()]
