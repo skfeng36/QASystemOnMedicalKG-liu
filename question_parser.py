@@ -22,9 +22,13 @@ class QuestionPaser:
     def parser_main(self, res_classify):
         args = res_classify['args']
         entity_dict = self.build_entitydict(args)
+        '''
+        {'disease': ['头痛'], 'symptom': ['头痛']}
+        '''
+
         question_types = res_classify['question_types']
-        print('entity_dict: %s', entity_dict)
-        print('question_types: %s', question_types)
+        print('entity_dict: ', entity_dict)
+        print('question_types: ', question_types)
         sqls = []
         for question_type in question_types:
             sql_ = {}

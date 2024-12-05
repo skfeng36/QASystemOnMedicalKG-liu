@@ -72,7 +72,7 @@ class QuestionClassifier:
         question_type = 'others'
 
         question_types = []
-        '''将语句中的实体进行分类，每种实体'''
+        '''对输入的语句进行问题目的分类，就是根据提前预设的一些问题目的分类，进行判断是否是某个问题目的，这里是硬编码'''
         # 症状
         if self.check_words(self.symptom_qwds, question) and ('disease' in types):
             question_type = 'disease_symptom'
@@ -162,12 +162,14 @@ class QuestionClassifier:
         if question_types == [] and 'symptom' in types:
             question_types = ['symptom_disease']
 
+        '''头痛吃什么食物
+        data: {'args': {'头痛': ['disease', 'symptom']}, 'question_types': ['disease_do_food']}'''
         # 将多个分类结果进行合并处理，组装成一个字典
         data['question_types'] = question_types
-
+        print('data:',data)
         return data
 
-    '''构造词对应的类型'''
+    '''构造词对应的类型, 将特征词存入到字典里，并对特征次进行分类，就是特征词属于哪一个实体'''
     def build_wdtype_dict(self):
         wd_dict = dict()
         for wd in self.region_words:
@@ -188,7 +190,7 @@ class QuestionClassifier:
                 wd_dict[wd].append('producer')
         return wd_dict
 
-    '''构造actree，加速过滤'''
+    '''构造actree，加速过滤，就是构造所有特征词的自动机集合，便于后面快速的查找特征词是否在这个集合里'''
     def build_actree(self, wordlist):
         actree = ahocorasick.Automaton()
         for index, word in enumerate(wordlist):
@@ -196,7 +198,10 @@ class QuestionClassifier:
         actree.make_automaton()
         return actree
 
-    '''问句过滤'''
+    '''问句过滤， 将用户输入的语句，在提前构造的关键字自动机中进行查找，找出语句中的所有关键字，并构造成带分类的字典'''
+    '''用户:头痛吃什么 食物
+      {'头痛': ['disease', 'symptom']}
+    '''
     def check_medical(self, question):
         region_wds = []
         for i in self.region_tree.iter(question):
