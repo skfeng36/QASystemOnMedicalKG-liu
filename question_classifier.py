@@ -61,7 +61,7 @@ class QuestionClassifier:
     def classify(self, question):
         data = {}
         medical_dict = self.check_medical(question)
-        print(medical_dict)
+        print("medical_dict:",medical_dict)
         if not medical_dict:
             return {}
         data['args'] = medical_dict
@@ -72,7 +72,7 @@ class QuestionClassifier:
         question_type = 'others'
 
         question_types = []
-
+        '''将语句中的实体进行分类，每种实体'''
         # 症状
         if self.check_words(self.symptom_qwds, question) and ('disease' in types):
             question_type = 'disease_symptom'

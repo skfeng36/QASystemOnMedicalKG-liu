@@ -19,6 +19,7 @@ class AnswerSearcher:
             queries = sql_['sql']
             answers = []
             for query in queries:
+                ''' 返回的是列表，列表的每一项是一个字典'''
                 ress = self.g.run(query).data()
                 answers += ress
                 print("answers: ",answers)
@@ -34,8 +35,11 @@ class AnswerSearcher:
         if not answers:
             return ''
         if question_type == 'disease_symptom':
+            '''将列表中的每一项，也就是字典中n.name 字段的内容转换成列表，这个就是要回答的答案内容'''
             desc = [i['n.name'] for i in answers]
+            '''' 列表的每一项是字典，字典的m.name项是问题实体'''
             subject = answers[0]['m.name']
+            ''' 将所有列表结果通过;进行拼接成最后的结果，结果被限制为200个，并且去重'''
             final_answer = '{0}的症状包括：{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
 
         elif question_type == 'symptom_disease':
